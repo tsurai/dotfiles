@@ -1,0 +1,22 @@
+[user]
+  name = Cristian Kubis
+  email = cristian.kubis@tsunix.de
+
+[push]
+  default = current
+
+[pull]
+  rebase = true
+
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+
+[merge]
+  tool = vimdiff
