@@ -1,0 +1,50 @@
+XTerm*locale: true
+UXTerm*faceName: Meslo LG S for Powerline:pixelsize=11
+XTerm*selectToClipboard: true
+XTerm*utf8: 1
+XTerm*utf8Title: 1
+XTerm*inputMethod: ibus
+
+*VT100*eightBitInput: false
+*VT100*eightBitControl: false
+*VT100*eightBitOutput: true
+*VT100*utf8: 1
+
+Xft.antialias: 1
+
+! kantan Xresources template
+*.foreground: #d0d0d0
+*.background: #151515
+*.cursorColor: #d0d0d0
+ 
+! Black / Grey
+xterm*color0: #202020
+xterm*color8: #606060
+ 
+!Red / Bright Red
+xterm*color1: #993a3b
+xterm*color9: #c25e5f
+ 
+!Green / Bright Green
+xterm*color2: #82994f
+xterm*color10: #9bb26a
+ 
+!Orange / Yellow
+xterm*color3: #d28445
+xterm*color11: #f4bf77
+    
+!Blue / Bright Blue
+xterm*color4: #5994ad
+xterm*color12: #7baabd
+    
+!Magenta / Bright Magenta
+xterm*color5: #a06594
+xterm*color13: #b485aa
+    
+!Cyan / Bright Cyan
+xterm*color6: #64aca0
+xterm*color14: #86beb4
+    
+!Light Grey / White
+xterm*color7: #d0d0d0
+xterm*color15: #f5f5f5
