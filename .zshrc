@@ -5,11 +5,15 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="candy"
+ZSH_THEME="avit"
 
 # Example aliases
-alias ll="ls -l"
-alias la="ls -a"
+#alias ll="ls -l"
+#alias la="ls -a"
+alias ll="exa -l"
+alias la="exa -a"
+alias lr="exa -TRl"
+
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
@@ -54,6 +58,45 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
+export GOROOT="/home/tsurai/go"
+export GOPATH="/home/tsurai/gocode/"
+export PREFIX="$HOME/opt/cross"
+export TARGET=i686-elf
+export PATH="$PREFIX/bin:$PATH"
+
+# note functions
+raw-name() {
+  echo "$*" | cut -d '.' --complement -f2-
+}
+
+# Convert a markdown file to manpage format and pipe it to stdout$
+mdcat() {
+  grep -v "\-\-\-\-\-" "$*" | pandoc -s -f markdown -t man | groff -T utf8 -man
+}
+
+# Convert a markdown file to manpage and read it with less$
+mdless() {
+  mdcat "$*" | less
+}
+
+# Convert a markdown file to html and view it inside the terminal with w3m$
+mdweb() {
+  grep -v "\-\-\-\-\-" "$*" | pandoc -s -f markdown -t html --webtex=http://chart.apis.google.com/chart\?cht\=tx\&chf\=bg,s,         161616FF\&chco=FFFFFF\&chl\= --toc | w3m -T text/html
+}
+
+md-create-pdf() {
+  grep -v "\-\-\-\-\-" "$*" | pandoc --toc -o `(raw-name "$*")`.pdf
+}
+
+md-create-html-slides() {
+  pandoc --self-contained --webtex -t dzslides "$*" -o `(raw-name "$*")`.html
+}
+
+md-create-pdf-slides() {
+  pandoc -t beamer -V theme:Rochester "$*" -o `(raw-name "$*")`_slides.pdf
+}
+
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # # Preferred editor for local and remote sessions

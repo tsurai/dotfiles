@@ -68,8 +68,8 @@ set smarttab
 
 " tab props
 set shiftwidth=2
-set tabstop=4
-set softtabstop=4
+set tabstop=2
+set softtabstop=2
 
 " ident & wrap
 set lbr
@@ -77,6 +77,7 @@ set tw=500
 set ai
 set si
 set wrap
+set list
 
 "" => Functionality foo
 " Moving though long lines
