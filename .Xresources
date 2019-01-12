@@ -1,16 +1,16 @@
 XTerm*locale: true
-UXTerm*faceName: Meslo LG S for Powerline:pixelsize=11
+XTerm*faceName: xft:Meslo LG S for Powerline:size=10
+XTerm*faceNameDoublesize: IPAMincho:pixelsize=12
 XTerm*selectToClipboard: true
-XTerm*utf8: 1
-XTerm*utf8Title: 1
+XTerm*utf8: true
+XTerm*utf8Title: true
 XTerm*inputMethod: ibus
 
 *VT100*eightBitInput: false
 *VT100*eightBitControl: false
 *VT100*eightBitOutput: true
-*VT100*utf8: 1
 
-Xft.antialias: 1
+Xft.antialias: true
 
 ! kantan Xresources template
 *.foreground: #d0d0d0
