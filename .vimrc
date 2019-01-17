@@ -5,47 +5,139 @@ filetype off
 set encoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp932,cp936,big5,euc-jp,euc-kr,gb18030,latin1,default
 
+let mapleader = " "
+let g:ale_lint_on_text_changed = 'normal'
+
+"" => Plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'mbbill/undotree'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-speeddating'
-Plug 'jnwhiteh/vim-golang'
-Plug 'rust-lang/rust.vim'
-Plug 'jceb/vim-orgmode'
+"" statusbar
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'maximbaz/lightline-ale'
+
+"" rainbow colored parentheses
 Plug 'luochen1990/rainbow'
 
-let g:rainbow_active = 1
-let g:rainbow_conf = {
-\ 'ctermfgs': ['blue', 'yellow', 'cyan', 'magenta']
-\}
+"" file system explorer
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 
-"" => airline
-set timeoutlen=10000 ttimeoutlen=0
-set laststatus=2
-set noshowmode
+"" undo branch browser
+Plug 'mbbill/undotree'
 
-let g:airline_theme='deus'
-let g:airline_symbols = {}
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
-let g:airline_symbols.branch = '⎇'
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#hunks#non_zero_only = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
+"" git plugins
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"" fuzzy finding
+Plug '~/.fzf'
+Plug 'junegunn/fzf.vim'
+
+" multi language syntax highlighting
+Plug 'sheerun/vim-polyglot'
+
+"" asynchronous lint engine
+Plug 'w0rp/ale'
+
+"" easy surrounding with parantheses, brackets and more
+Plug 'tpope/vim-surround'
+
+"" emacs org mode for vim
+Plug 'jceb/vim-orgmode'
+Plug 'tpope/vim-speeddating'
 
 call plug#end()
+
+"" => lightline
+set timeoutlen=10000 ttimeoutlen=0
+set laststatus=2
+set showtabline=2
+set noshowmode
+
+let g:lightline#bufferline#show_number  = 1
+let g:lightline#bufferline#shorten_path = 0
+let g:lightline#bufferline#unnamed      = '[No Name]'
+let g:lightline#ale#indicator_errors = '✘ '
+let g:lightline#ale#indicator_warnings = '▲ '
+let g:lightline#ale#indicator_ok = ''
+
+let g:lightline = {
+    \ 'colorscheme': 'kantan',
+    \ 'active': {
+    \   'right': [ ['lineinfo'],
+    \              ['percent'],
+    \              [ 'fileformat', 'fileencoding', 'filetype', 'charvaluehex' ],
+    \              [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok' ] ]
+    \ },
+    \ 'tabline': {
+    \   'left': [ ['buffers'] ],
+    \   'right': [],
+    \ },
+    \ 'component_expand': {
+    \   'buffers': 'lightline#bufferline#buffers',
+    \  'linter_checking': 'lightline#ale#checking',
+    \  'linter_warnings': 'lightline#ale#warnings',
+    \  'linter_errors': 'lightline#ale#errors',
+    \  'linter_ok': 'lightline#ale#ok',
+    \ },
+    \ 'component_type': {
+    \   'buffers': 'tabsel',
+    \   'linter_checking': 'left',
+    \   'linter_warnings': 'warning',
+    \   'linter_errors': 'error',
+    \   'linter_ok': 'left',
+    \ },
+    \ 'component': {
+    \   'charvaluehex': '0x%B'
+    \ },
+    \ }
+
+"" => nerdtree
+map <C-e> :NERDTreeToggle<cr>
+let NERDTreeQuitOnOpen=1
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
+let NERDTreeAutoDeleteBuffer=1
+
+"" => undotree
+nnoremap <C-u> :UndotreeToggle<CR>
+
+"" => gitgutter
+let g:gitgutter_sign_added = '•'
+let g:gitgutter_sign_modified = '•'
+let g:gitgutter_sign_removed = '•'
+" avoids delay with the bprevious binding
+nmap <leader>gha <Plug>GitGutterStageHunk
+nmap <leader>ghr <Plug>GitGutterUndoHunk
+nmap <leader>ghp <Plug>GitGutterPreviewHunk
+
+"" => fzf
+nmap ; :Buffers<CR>
+nmap <leader>f :Files<CR>
+nmap <leader>t :Tags<CR>
+
+"" => ALE
+let g:ale_linters = {
+    \ 'cpp': ['clangcheck', 'clangtidy', 'cppcheck']
+    \ }
+let g:ale_cpp_clangtidy_options = 'p ./build/'
+let g:ale_sign_warning = '▲'
+let g:ale_sign_error = '✘'
+highlight link ALEWarningSign Constant
+highlight link ALEErrorSign ErrorMsg
+
+"" => Rainbow
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+    \ 'ctermfgs': ['blue', 'yellow', 'cyan', 'magenta']
+    \ }
+
+"" => Non-plugin settings
+
+"" => Shortcuts
+nnoremap <leader>rtw :%s/\s\+$//e<CR>
+nmap \q :nohlsearch<CR>
 
 "" => Colors
 set t_Co=16
@@ -60,9 +152,6 @@ set ruler
 set number
 set relativenumber
 set cursorline
-
-let mapleader=" "
-nnoremap <leader>rtw :%s/\s\+$//e<CR>
 
 " Highlight search results
 set hlsearch
@@ -123,46 +212,8 @@ map <Down> <Nop>
 map <Left> <Nop>
 map <Right> <Nop>
 
-" Visual mode pressing * or # searches for the current selection
-" Idea by Michael Naumann
-vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call VisualSelection('b')<CR>
-
-" Search shortcuts
-map <space> /
-map <c-space> ?
-
-" Tab management keys
-"nnoremap <C-tab> :tabnext<CR>
-"nnoremap <C-S-tab> :tabprevious<CR>
-"inoremap <C-S-tab> <ESC>:tabprevious<CR>i
-"inoremap <C-Insert> <ESC>:tabprevious<CR>i
-"inoremap <C-Delete> <ESC>:tabclose<CR>i
-"nnoremap <A-1> 1gt
-"nnoremap <A-2> 2gt
-"nnoremap <A-3> 3gt
-"nnoremap <A-4> 4gt
-"nnoremap <A-5> 5gt
-"nnoremap <A-6> 6gt
-"nnoremap <A-7> 7gt
-"nnoremap <A-8> 8gt
-"nnoremap <A-9> 9gt
-"nnoremap <A-0> 0gt
-
-map <C-e> :NERDTreeToggle<cr>
-let NERDTreeQuitOnOpen=1
-let NERDTreeMinimalUI=1
-let NERDTreeDirArrows=1
-let NERDTreeAutoDeleteBuffer=1
-
-nnoremap <C-u> :UndotreeToggle<CR>
-
 " vim-orgmode
 let g:org_agenda_files = ['~/org/index.org', '~/org/project.org']
-
-" YouCompleteMe
-let g:ycm_show_diagnostics_ui = 1
-let g:ycm_cache_omnifunc = 1
 
 " Return to last edited position on opening
 autocmd BufReadPost *
@@ -170,7 +221,5 @@ autocmd BufReadPost *
         \ exe "normal! g`\"" |
         \ endif
 
-filetype plugin on
 filetype plugin indent on
 syntax on
-syntax enable
