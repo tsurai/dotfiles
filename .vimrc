@@ -30,10 +30,6 @@ Plug 'mbbill/undotree'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-"" fuzzy finding
-Plug '~/.fzf'
-Plug 'junegunn/fzf.vim'
-
 " multi language syntax highlighting
 Plug 'sheerun/vim-polyglot'
 
@@ -43,9 +39,21 @@ Plug 'w0rp/ale'
 "" easy surrounding with parantheses, brackets and more
 Plug 'tpope/vim-surround'
 
-"" emacs org mode for vim
-Plug 'jceb/vim-orgmode'
-Plug 'tpope/vim-speeddating'
+"" ctags
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
+
+"" fuzzy finding
+if executable('fzf')
+    Plug '~/.fzf'
+    Plug 'junegunn/fzf.vim'
+endif
+
+"" rust
+if executable('rustc')
+    Plug 'rust-lang/rust.vim'
+    Plug 'racer-rust/vim-racer'
+endif
 
 call plug#end()
 
@@ -133,6 +141,18 @@ let g:rainbow_conf = {
     \ 'ctermfgs': ['blue', 'yellow', 'cyan', 'magenta']
     \ }
 
+"" => ctags
+let g:gutentags_ctags_exclude = ["build", "target", ".git"]
+nmap <F8> :TagbarToggle<CR>
+
+"" => Rust
+set hidden
+let g:racer_cmd = "$HOME/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+au FileType rust nmap <leader>rx <Plug>(rust-doc)
+au FileType rust nmap <leader>rd <Plug>(rust-def)
+au FileType rust nmap <leader>rs <Plug>(rust-def-split)
+
 "" => Non-plugin settings
 
 "" => Shortcuts
@@ -144,7 +164,6 @@ set t_Co=16
 set background=dark
 colorscheme kantan
 set guifont=Source\ Code\ Pro\ for\ Powerline:h12
-set encoding=utf8
 
 "" => Display settings
 " show current position
@@ -167,7 +186,6 @@ set tm=500
 
 set wildmenu
 set wildcharm=<C-z>
-set showmatch
 set incsearch
 
 "" => Text behavior
@@ -177,8 +195,6 @@ set history=100
 set scrolloff=8
 set expandtab
 set smarttab
-
-" tab props
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
@@ -189,10 +205,8 @@ set tw=500
 set ai
 set si
 set wrap
-set list
 
 " buffer settings
-set hidden
 nnoremap <leader>n :enew<CR>
 nnoremap <leader>l :bnext<CR>
 nnoremap <leader>h :bprevious<CR>
@@ -211,9 +225,6 @@ map <Up> <Nop>
 map <Down> <Nop>
 map <Left> <Nop>
 map <Right> <Nop>
-
-" vim-orgmode
-let g:org_agenda_files = ['~/org/index.org', '~/org/project.org']
 
 " Return to last edited position on opening
 autocmd BufReadPost *
